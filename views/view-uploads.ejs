@@ -10,11 +10,31 @@
 </head>
 
 <body class="file-uploaded-body">
-    <form method="POST" enctype="multipart/form" action="/view-uploads">
-        <input type="text" name="account" id="account" placeholder="Account public id">
-        <input type="submit" class="btn" id="submit" />
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <form method="POST" enctype="multipart/form" action="/view-uploads" id="view-uploads-form" name="view-uploads-form">
+        <input type="text" name="account" id="account" type="hidden" />
     </form>
 
 </body>
+<script>
+    const {
+        ethereum
+    } = window;
+    async function init() {
+        const metamaskIsInstalled = ethereum && ethereum.isMetaMask;
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+        });
+        const networkId = await window.ethereum.request({
+            method: "net_version",
+        });
+        web3 = new Web3(ethereum)
+        const account = accounts[0];
+        console.log(account);
+        document.getElementById('account').value = String(account);
+        document.getElementById('view-uploads-form').submit();
+    }
+    init();
+</script>
 
 </html>

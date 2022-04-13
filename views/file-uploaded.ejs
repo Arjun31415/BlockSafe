@@ -10,6 +10,7 @@
 </head>
 
 <body class="file-uploaded-body">
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
   <div class="contact-form file-upload-card" id="file-upload">
     <h1>File Uploaded!</h1>
     <h3>Directory Name: <%= dir.dir_name%></h3>
@@ -18,9 +19,55 @@
       <img src="https://img.icons8.com/ios/14/000000/file--v1.png" />
       <% const fileLink = "https://ipfs.io/ipfs/" + file.cid %>
       <a href="<%= fileLink %>"><%= file.name%></a>
+      <button class="btn btn-primary" id="upload">Upload to polygon</button>
       <% } %>
     </div>
   </div>
 </body>
+<script>
+  document.getElementById("upload").addEventListener("click", function () {
+    console.log("cl9cked");
+    fetch("NCC.json")
+      .then(response => {
+        return response.json();
+      })
+      .then(SmartContract => {
+        const {
+          ethereum
+        } = window;
+        const metamaskIsInstalled = ethereum && ethereum.isMetaMask;
+        async function onInit1() {
+          if (metamaskIsInstalled) {
+            const accounts = await window.ethereum.request({
+              method: "eth_requestAccounts",
+            });
+            const networkId = await window.ethereum.request({
+              method: "net_version",
+            });
+            var web3 = new Web3(ethereum)
+            const account = accounts[0];
+            if (networkId == 80001) {
+              console.log(String(account));
+              var YourContract = await new web3.eth.Contract(SmartContract,
+                "0xCF0F196aEf500ad4624FD28cAb1C7bFaaD1b7557");
+              YourContract.methods.createToken(
+                "https://ipfs.io/ipfs/QmbPDwHQdBEchkKvUBEuBJCJqUzFbL2nBy1QY6YHx76Wag/xczx", "1").send({
+                to: "0xCF0F196aEf500ad4624FD28cAb1C7bFaaD1b7557",
+                from: account,
+                value: web3.utils.toWei((0).toString(), "ether"),
+              })
+
+            } else {
+              alert("Change Network to Mumbai Testnet");
+            }
+          } else {
+            alert("Connect to Metamask");
+          }
+        }
+
+        onInit1();
+      })
+  });
+</script>
 
 </html>
