@@ -47,13 +47,13 @@
     "express-fileupload": "^1.3.1",
     "ipfs-http-client": "^56.0.2",
     "it-all": "^1.0.6",
-    "web3": "^1.7.3",
+    "web3": "^1.8.1",
     "web3-eth-contract": "^1.7.3"
   },
   "devDependencies": {
     "@maticnetwork/maticjs": "^2.0.40",
     "@truffle/hdwallet-provider": "^2.0.5",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.20",
     "prettier": "^2.6.2",
     "sass": "^1.50.0"
   }
